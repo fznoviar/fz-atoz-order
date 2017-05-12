@@ -28,7 +28,12 @@
                             <label for="amount" class="col-md-4 control-label">Value</label>
 
                             <div class="col-md-6">
-                                <input id="amount" type="number" class="form-control" name="amount" value="{{ old('amount') }}" required>
+                                <select name="amount" id="amount" class="form-control">
+                                    <option value="">Select Amount</option>
+                                    @foreach ($amounts as $amount)
+                                        <option value="{{ $amount }}" {{ old('amount') == $amount ? 'selected' : '' }}>{{ $amount }}</option>
+                                    @endforeach
+                                </select>
 
                                 @if ($errors->has('amount'))
                                     <span class="help-block">

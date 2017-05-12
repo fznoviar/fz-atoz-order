@@ -19,10 +19,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('prepaid-balance', function () {
-    return view('prepaid_balances.form');
-})->name('prepaid-balance.create');
-
-Route::post('prepaid-balance', function () {
-    dd(1);
-})->name('prepaid-balance.store');
+Route::resource('prepaid-balances', 'PrepaidBalanceController');
