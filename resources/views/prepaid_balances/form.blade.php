@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Prepaid Balance</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('prepaid-balance.store') }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ route('prepaid-balances.store') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('phone_number') ? ' has-error' : '' }}">

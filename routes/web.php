@@ -19,4 +19,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('prepaid-balances', 'PrepaidBalanceController');
+Route::resource('prepaid-balances', 'PrepaidBalanceController', ['only' => ['create', 'store', 'show']]);
+Route::resource('product-commerces', 'ProductCommerceController', ['only' => ['create', 'store', 'show']]);
