@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
+use App\Models\PrepaidBalance;
+use App\Models\ProductCommerce;
+use App\Policies\PrepaidBalancePolicy;
+use App\Policies\ProductCommercePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +17,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        PrepaidBalance::class => PrepaidBalancePolicy::class,
+        ProductCommerce::class => ProductCommercePolicy::class,
     ];
 
     /**
@@ -24,7 +29,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        //
     }
 }
