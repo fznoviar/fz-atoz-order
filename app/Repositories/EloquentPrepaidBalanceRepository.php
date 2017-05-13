@@ -5,8 +5,9 @@ namespace App\Repositories;
 use App\Models\PrepaidBalance;
 use App\Repositories\BaseRepository;
 use App\Repositories\BaseRepositoryInterface;
+use App\Repositories\OrderableRepository;
 
-class EloquentPrepaidBalanceRepository extends BaseRepository implements BaseRepositoryInterface
+class EloquentPrepaidBalanceRepository extends OrderableRepository implements BaseRepositoryInterface
 {
     public function __construct(PrepaidBalance $model)
     {

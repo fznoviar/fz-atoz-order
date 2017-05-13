@@ -11,6 +11,7 @@ class ProductCommerceController extends Controller
 
     public function __construct(Repository $repository)
     {
+        $this->middleware('auth');
         $this->repository = $repository;
     }
 
@@ -29,6 +30,8 @@ class ProductCommerceController extends Controller
     public function show($key)
     {
         $commerce = $this->repository->getItem($key);
+
+        $this->authorize('view', $commerce);
         return view('product_commerces.show', compact('commerce'));
     }
 }

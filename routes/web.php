@@ -19,5 +19,22 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('prepaid-balances', 'PrepaidBalanceController', ['only' => ['create', 'store', 'show']]);
-Route::resource('product-commerces', 'ProductCommerceController', ['only' => ['create', 'store', 'show']]);
+Route::get('prepaid-balances', 'PrepaidBalanceController@create')
+    ->name('prepaid-balances.create');
+Route::get('prepaid-balances/{prepaid_balance}', 'PrepaidBalanceController@show')
+    ->name('prepaid-balances.show');
+Route::post('prepaid-balances', 'PrepaidBalanceController@store')
+    ->name('prepaid-balances.store');
+Route::get('product-commerces', 'ProductCommerceController@create')
+    ->name('product-commerces.create');
+Route::get('product-commerces/{product_commerce}', 'ProductCommerceController@show')
+    ->name('product-commerces.show');
+Route::post('product-commerces', 'ProductCommerceController@store')
+    ->name('product-commerces.store');
+
+Route::get('order', 'OrderController@index')
+    ->name('orders.index');
+Route::get('payment', 'PaymentController@index')
+    ->name('payments.index');
+Route::post('payment', 'PaymentController@store')
+    ->name('payments.store');

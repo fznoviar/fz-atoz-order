@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePrepaidBalancesTable extends Migration
+class CreateOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreatePrepaidBalancesTable extends Migration
      */
     public function up()
     {
-        Schema::create('prepaid_balances', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('phone_number', 20);
-            $table->integer('amount');
+            $table->unsignedInteger('user_id');
+            $table->string('order_number', 15);
+            $table->unsignedInteger('orderable_id');
+            $table->string('orderable_type');
             $table->tinyInteger('status')->default(0);
 
+            $table->dateTime('paid_time')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +33,6 @@ class CreatePrepaidBalancesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('prepaid_balances');
+        Schema::dropIfExists('orders');
     }
 }

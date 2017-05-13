@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 
@@ -22,38 +23,48 @@ abstract class BaseRepository
         return $this->model;
     }
 
-    public function resolveFillable(Request $request)
+    public function getAll($scopes = [])
     {
-        $fillable = $this->model()->getFillable();
-        $input = $request->all();
+        $builder = $this->model()->newQuery();
 
-        return array_only($input, $fillable);
-    }
-
-    public function validateInput(Request $request)
-    {
-        $input = $this->resolveFillable($request);
-        if (method_exists($this->model(), 'rules')) {
-            $validator = $this->getValidationFactory()->make($input, $this->getRules());
-            if ($validator->fails()) {
-                $this->throwValidationException($request, $validator);
-            }
+        if (is_array($scopes) && !empty($scopes)) {
+            $builder->scopes($scopes);
         }
-        return $input;
-    }
 
-    public function getAll()
-    {
         if (method_exists($this->model(), "scopeUseDefault")) {
-            return $this->model()->useDefault()->get();
+            $builder = $builder->useDefault();
         }
-        return $this->model()->get();
+        return $builder->get();
     }
 
-    public function getItem($key)
+    public function paginate($perPage = 20, $scopes = [])
     {
-        if ($key instanceof PrepaidBalance) {
+        $builder = $this->model()->newQuery();
+
+        if (is_array($scopes) && !empty($scopes)) {
+            $builder->scopes($scopes);
+        }
+
+        if (method_exists($this->model(), "scopeUseDefault")) {
+            $builder = $builder->useDefault();
+        }
+        return $builder->paginate($perPage);
+    }
+
+    public function getItem($key, $attribute = null)
+    {
+        if ($key instanceof Model) {
             return $key;
+        }
+
+        if ($attribute) {
+            $model = $this->model()->where($attribute, $key)->first();
+            if ($model === null) {
+                throw (new ModelNotFoundException)->setModel(
+                    get_class($this->model),
+                    $key
+                );
+            }
         }
         return $this->model()->findOrFail($key);
     }
@@ -79,6 +90,26 @@ abstract class BaseRepository
         $item = $this->getItem($key);
         $item->delete();
         return $item;
+    }
+
+    public function resolveFillable(Request $request)
+    {
+        $fillable = $this->model()->getFillable();
+        $input = $request->all();
+
+        return array_only($input, $fillable);
+    }
+
+    public function validateInput(Request $request)
+    {
+        $input = $this->resolveFillable($request);
+        if (method_exists($this->model(), 'rules')) {
+            $validator = $this->getValidationFactory()->make($input, $this->getRules());
+            if ($validator->fails()) {
+                $this->throwValidationException($request, $validator);
+            }
+        }
+        return $input;
     }
 
     protected function getRules()

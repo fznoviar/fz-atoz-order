@@ -8,9 +8,11 @@ interface BaseRepositoryInterface
 {
     public function model();
 
-    public function getAll();
+    public function getAll($scopes);
 
-    public function getItem($key);
+    public function paginate($perPage, $scopes);
+
+    public function getItem($key, $attribute);
 
     public function resolveFillable(Request $request);
 

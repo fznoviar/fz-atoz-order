@@ -12,6 +12,7 @@ class PrepaidBalanceController extends Controller
 
     public function __construct(Repository $repository)
     {
+        $this->middleware('auth');
         $this->repository = $repository;
         view()->share('amounts', $this->repository->amounts());
     }
@@ -23,7 +24,7 @@ class PrepaidBalanceController extends Controller
 
     public function store(Request $request)
     {
-        $balance = $this->repository->create($request, ['user_id' => auth()->user()->getKey()]);
+        $balance = $this->repository->create($request);
 
         return redirect()->route('prepaid-balances.show', $balance);
     }
@@ -31,6 +32,8 @@ class PrepaidBalanceController extends Controller
     public function show($key)
     {
         $balance = $this->repository->getItem($key);
+
+        $this->authorize('view', $balance);
         return view('prepaid_balances.show', compact('balance'));
     }
 }

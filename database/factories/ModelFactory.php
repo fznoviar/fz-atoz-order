@@ -26,9 +26,6 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 $factory->define(App\Models\PrepaidBalance::class, function (Faker\Generator $faker) {
 
     return [
-        'user_id' => function () {
-            return factory(App\User::class)->create()->id;
-        },
         'phone_number' => $faker->phoneNumber,
         'amount' => $faker->numberBetween(10000, 10000000)
     ];

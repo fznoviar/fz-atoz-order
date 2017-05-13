@@ -17,6 +17,7 @@ class CreateProductCommercesTable extends Migration
             $table->increments('id');
             $table->string('product', 200);
             $table->text('shipping_address', 200);
+            $table->text('shipping_code', 10)->nullable();
             $table->integer('price');
             $table->timestamps();
         });
